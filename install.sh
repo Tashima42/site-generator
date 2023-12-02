@@ -79,6 +79,10 @@ download() {
 # download_tarball downloads the tarbal for the given version.
 download_tarball() {
     TARBALL_URL="${REPO_RELEASE_URL}/download/${RELEASE_VERSION}/site-generator_${SUFFIX}.tar.gz"
+    if [ "${RELEASE_VERSION}" = "latest" ]; then 
+      TARBALL_URL="${REPO_RELEASE_URL}/latest/download/site-generator_${SUFFIX}.tar.gz"
+    fi;
+ 
 
     echo "downloading tarball from ${TARBALL_URL}"
     
