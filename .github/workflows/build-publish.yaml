@@ -30,7 +30,7 @@ jobs:
           sparse-checkout: .
       - name: install site-generator
         run: |
-          ./install.sh v0.0.3
+          ./install.sh v0.0.4
           INSTALL_DIR=$HOME/.local/bin
           echo "${INSTALL_DIR}" >> "${GITHUB_PATH}"
       - name: build
