@@ -38,8 +38,8 @@ type MenuItem struct {
 	Current      bool
 }
 
-func Generate(options Options) error {
-	source, err := os.ReadDir(options.SourcePath)
+func Generate(opt Options) error {
+	source, err := os.ReadDir(opt.SourcePath)
 	if err != nil {
 		return err
 	}
@@ -53,7 +53,7 @@ func Generate(options Options) error {
 		}
 		meta := MetaData{
 			FileName: e.Name(),
-			Path:     options.SourcePath + "/" + e.Name(),
+			Path:     opt.SourcePath + "/" + e.Name(),
 		}
 		metaFile, err := os.ReadFile(meta.Path + "/" + "meta.yaml")
 		if err != nil {
@@ -70,7 +70,7 @@ func Generate(options Options) error {
 		})
 	}
 
-	if err := cleanFolder(options.DestinationPath); err != nil {
+	if err := cleanFolder(opt.DestinationPath); err != nil {
 		return err
 	}
 
@@ -79,15 +79,15 @@ func Generate(options Options) error {
 		if err != nil {
 			return err
 		}
-		f, err := os.Create(options.DestinationPath + "/" + pm.HTMLPath)
+		f, err := os.Create(opt.DestinationPath + "/" + pm.HTMLPath)
 		if err != nil {
 			return err
 		}
 		defer f.Close()
 		menuItens[i].Current = true
 		pageData := PageData{
-			HTMLTitle: options.Name,
-			PageTitle: options.Name,
+			HTMLTitle: opt.Name,
+			PageTitle: opt.Name,
 			MenuItems: menuItens,
 		}
 		if err := tpl.Execute(f, pageData); err != nil {

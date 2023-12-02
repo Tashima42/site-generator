@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/tashima42/site-generator/generator"
+	"github.com/tashima42/site-generator/manager"
 	"github.com/urfave/cli/v2"
 )
 
@@ -45,6 +46,50 @@ func main() {
 						SourcePath:      ctx.String("source"),
 						DestinationPath: ctx.String("destination"),
 					})
+				},
+			},
+			{
+				Name:  "manager",
+				Usage: "Manage the website pages",
+				Subcommands: []*cli.Command{
+					{
+						Name:  "add",
+						Usage: "Add a page",
+						Flags: []cli.Flag{
+							&cli.StringFlag{
+								Name:     "pages-path",
+								Usage:    "Folder with the current pages",
+								Aliases:  []string{"p"},
+								Required: true,
+							},
+							&cli.StringFlag{
+								Name:     "folder-name",
+								Usage:    "Name of the folder to create the pages at",
+								Aliases:  []string{"f"},
+								Required: true,
+							},
+							&cli.StringFlag{
+								Name:     "title",
+								Usage:    "Title of the created page",
+								Aliases:  []string{"t"},
+								Required: true,
+							},
+							&cli.StringFlag{
+								Name:     "html-path",
+								Usage:    "Path of the HTML page",
+								Aliases:  []string{"m"},
+								Required: true,
+							},
+						},
+						Action: func(ctx *cli.Context) error {
+							return manager.AddPage(manager.Options{
+								PagesPath:  ctx.String("pages-path"),
+								FolderName: ctx.String("folder-name"),
+								Title:      ctx.String("title"),
+								HTMLPath:   ctx.String("html-path"),
+							})
+						},
+					},
 				},
 			},
 		},
