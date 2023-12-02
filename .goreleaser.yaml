@@ -4,7 +4,9 @@ before:
   hooks:
     - go mod tidy
     - rm -rf generator/pages
-    - cp -r pages generator
+    - mkdir -p generator/tmp
+    - cp -r pages generator/tmp
+    - cp -r templates generator/tmp
 
 builds:
   - env:

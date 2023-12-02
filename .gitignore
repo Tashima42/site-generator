@@ -27,6 +27,6 @@ build/**
 tmp/
 
 # go embed
-generator/pages/
+generator/tmp/
 
 dist/

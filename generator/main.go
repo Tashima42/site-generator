@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	templatesFolder  = "templates"
-	pagesFolder      = "pages"
+	templatesFolder  = "tmp/templates"
+	pagesFolder      = "tmp/pages"
 	pageTemplateFile = templatesFolder + "/template.html"
 )
 
@@ -39,11 +39,11 @@ type MenuItem struct {
 	Current      bool
 }
 
-//go:embed pages
-var pages embed.FS
+//go:embed tmp
+var fs embed.FS
 
 func Generate(opt Options) error {
-	source, err := pages.ReadDir("pages")
+	source, err := fs.ReadDir("tmp/pages")
 	if err != nil {
 		return err
 	}
@@ -59,7 +59,7 @@ func Generate(opt Options) error {
 			FileName: e.Name(),
 			Path:     pagesFolder + "/" + e.Name(),
 		}
-		metaFile, err := pages.ReadFile(meta.Path + "/" + "meta.yaml")
+		metaFile, err := fs.ReadFile(meta.Path + "/" + "meta.yaml")
 		if err != nil {
 			return err
 		}
@@ -79,7 +79,7 @@ func Generate(opt Options) error {
 	}
 
 	for i, pm := range pagesMetaData {
-		tpl, err := template.New("wrapper").ParseFiles(pageTemplateFile, pm.Path+"/page.html")
+		tpl, err := template.New("wrapper").ParseFS(fs, pageTemplateFile, pm.Path+"/page.html")
 		if err != nil {
 			return err
 		}
