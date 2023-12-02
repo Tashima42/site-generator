@@ -18,7 +18,7 @@ concurrency:
 
 jobs: 
   build-pages-publish:
-    name: Build html pages and push to the gh-pages branch
+    name: Build html pages and publish
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
