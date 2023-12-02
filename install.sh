@@ -34,7 +34,7 @@ setup_arch() {
 
 # setup_tmp creates a temporary directory and cleans up when done.
 setup_tmp() {
-    TMP_DIR=$(mktemp -d -t site-generator-install)
+    TMP_DIR=$(mktemp -d -t site-generator-install.XXXXXXXXXXXX)
     cleanup() {
         code=$?
         set +e
