@@ -95,8 +95,6 @@ func main() {
 	compiled, err := time.Parse("2006-01-02T15:04:05Z", date)
 	if err == nil {
 		app.Compiled = compiled
-	} else {
-		log.Print(err)
 	}
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)

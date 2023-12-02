@@ -4,6 +4,7 @@ import (
 	"embed"
 	"fmt"
 	"html/template"
+	"log"
 	"os"
 
 	"gopkg.in/yaml.v3"
@@ -43,6 +44,7 @@ type MenuItem struct {
 var fs embed.FS
 
 func Generate(opt Options) error {
+	log.Print("generating")
 	source, err := fs.ReadDir("tmp/pages")
 	if err != nil {
 		return err
@@ -99,6 +101,7 @@ func Generate(opt Options) error {
 		}
 		menuItens[i].Current = false
 	}
+	log.Println("generated")
 	return nil
 }
 

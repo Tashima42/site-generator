@@ -1,0 +1,31 @@
+{{define "print-style"}}
+{{end}}
+{{define "style"}}
+.sourdough-main {
+display: flex;
+flex-direction: column;
+}
+{{end}}
+{{define "meta"}}
+{{end}}
+{{define "content"}}
+<div class="sourdough-main">
+  <h1>Sourdough calculator</h1>
+  <div>
+    <label for="starter-weight">Starter weight (grams):</label>
+    <input id="starter-weight" type=number />
+    <button onclick="calculate()">calculate</button>
+  </div>
+  <p>Flour: <a id="sourdough-flour"></a></p>
+  <p>Water: <a id="sourdough-water"></a></p>
+</div>
+<script>
+  function calculate() {
+    const starter = document.getElementById("starter-weight")
+    const flourAmmount = Math.round(Number(starter.value) * 2)
+    const waterAmmount = Math.round(flourAmmount * 0.6)
+    document.getElementById("sourdough-flour").textContent = flourAmmount
+    document.getElementById("sourdough-water").textContent = waterAmmount
+  }
+</script>
+{{end}}
