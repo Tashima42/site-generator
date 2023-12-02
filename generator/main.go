@@ -35,6 +35,7 @@ type MetaData struct {
 type MenuItem struct {
 	HTMLPageName string
 	PageName     string
+	Current      bool
 }
 
 func Generate(options Options) error {
@@ -65,10 +66,15 @@ func Generate(options Options) error {
 		menuItens = append(menuItens, MenuItem{
 			HTMLPageName: meta.HTMLPath,
 			PageName:     meta.PageTitle,
+			Current:      false,
 		})
 	}
 
-	for _, pm := range pagesMetaData {
+	if err := cleanFolder(options.DestinationPath); err != nil {
+		return err
+	}
+
+	for i, pm := range pagesMetaData {
 		tpl, err := template.New("wrapper").ParseFiles(pageTemplateFile, pm.Path+"/page.html")
 		if err != nil {
 			return err
@@ -77,6 +83,8 @@ func Generate(options Options) error {
 		if err != nil {
 			return err
 		}
+		defer f.Close()
+		menuItens[i].Current = true
 		pageData := PageData{
 			HTMLTitle: options.Name,
 			PageTitle: options.Name,
@@ -85,6 +93,14 @@ func Generate(options Options) error {
 		if err := tpl.Execute(f, pageData); err != nil {
 			return err
 		}
+		menuItens[i].Current = false
 	}
 	return nil
+}
+
+func cleanFolder(folder string) error {
+	if err := os.RemoveAll(folder); err != nil {
+		return err
+	}
+	return os.MkdirAll(folder, 0700)
 }

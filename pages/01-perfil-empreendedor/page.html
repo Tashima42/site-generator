@@ -1,3 +1,36 @@
+{{define "style"}}
+.result-selected {
+background-color: rgba(239, 239, 110, 0.641);
+text-decoration: underline;
+}
+{{end}}
+
+{{define "print-style"}}
+.description {
+display: none;
+}
+
+.print {
+display: none;
+}
+
+#questions {
+display: none;
+}
+
+.calculo {
+display: none;
+}
+
+.result-selected {
+text-decoration: underline;
+}
+
+button {
+display: none;
+}
+{{end}}
+
 {{define "content"}}
 <h1 class="title">Teste aqui seu perfil empreendedor</h1>
 <p class="description" style="text-align: center;">Verifique através deste teste, se você tem tino empresarial.
@@ -324,7 +357,7 @@
 </form>
 
 <div class="result">
-  <button class="perfil-button" onclick="calculateResult()">cacular resultado</button>
+  <button class="perfil-button" onclick="result()">cacular resultado</button>
   <div class="result-container">
     <p>resultado: </p>
     <p id="result-number"> </p>
@@ -375,6 +408,71 @@
   <button onclick="print()">Imprimir resultados</button>
 </div>
 
-<script src="./form.js"></script>
-<script src="./perfil.js"></script>
+<script>
+  const profileForm = {
+    questions:
+      [
+        { id: 1, options: { a: { weight: 1 }, b: { weight: 3, }, c: { weight: 5, } } },
+        { id: 2, options: { a: { weight: 1 }, b: { weight: 5 }, c: { weight: 1 } } },
+        { id: 3, options: { a: { weight: 5 }, b: { weight: 1 }, c: { weight: 3 } } },
+        { id: 4, options: { a: { weight: 1 }, b: { weight: 5 }, c: { weight: 3 } } },
+        { id: 5, options: { a: { weight: 5 }, b: { weight: 3 }, c: { weight: 1 } } },
+        { id: 6, options: { a: { weight: 5 }, b: { weight: 1 }, c: { weight: 3 } } },
+        { id: 7, options: { a: { weight: 1 }, b: { weight: 5 }, c: { weight: 3 } } },
+        { id: 8, options: { a: { weight: 5 }, b: { weight: 3 }, c: { weight: 1 } } },
+        { id: 9, options: { a: { weight: 3 }, b: { weight: 5 }, c: { weight: 1 } } },
+        { id: 10, options: { a: { weight: 5 }, b: { weight: 3 }, c: { weight: 1 } } },
+        { id: 11, options: { a: { weight: 3 }, b: { weight: 5 }, c: { weight: 1 } } },
+        { id: 12, options: { a: { weight: 5 }, b: { weight: 3 }, c: { weight: 1 } } },
+        { id: 13, options: { a: { weight: 3 }, b: { weight: 5 }, c: { weight: 1 } } },
+        { id: 14, options: { a: { weight: 3 }, b: { weight: 5 }, c: { weight: 1 } } },
+        { id: 15, options: { a: { weight: 5 }, b: { weight: 1 }, c: { weight: 3 } } },
+        { id: 16, options: { a: { weight: 1 }, b: { weight: 5 }, c: { weight: 3 } } },
+        { id: 17, options: { a: { weight: 5 }, b: { weight: 1 }, c: { weight: 3 } } },
+        { id: 18, options: { a: { weight: 3 }, b: { weight: 1 }, c: { weight: 5 } } },
+        { id: 19, options: { a: { weight: 3 }, b: { weight: 1 }, c: { weight: 5 } } },
+        { id: 20, options: { a: { weight: 5 }, b: { weight: 1 }, c: { weight: 3 } } },
+      ],
+    calculateResult: (total) => {
+      if (typeof total != "number") alert(`Tipo invalido, o esperado era "number", mas o tipo e: ${typeof total}`)
+      if (total < 0) alert(`Resultado invalido, o resultado precisa ser maior que 0, mas foi de: ${total}`)
+      if (total < 30) return "abaixo-30"
+      if (total >= 30 && total <= 49) return "acima-30"
+      if (total >= 50 && total <= 69) return "acima-50"
+      if (total >= 70 && total <= 89) return "acima-70"
+      if (total > 90) return "acima-90"
+      return "Unexpected result"
+    }
+  }
+  function result() {
+    let total = 0
+    const questionsLength = 20
+    for (let i = 0; i < profileForm.questions.length; i++) {
+      const question = profileForm.questions[i]
+      const element = document.getElementsByName(`question-perfil-options-${question.id}`)
+      let oneChecked = false
+      for (let j = 0; j < element.length; j++) {
+        const el = element[j]
+        if (el.checked) {
+          const value = question.options[el.value].weight
+          total += value
+          oneChecked = true
+        }
+      }
+      if (!oneChecked) {
+        alert(`A pergunta ${i + 1} não foi respondida`)
+        return
+      }
+    }
+    buildResult(total, profileForm.calculateResult(total))
+  }
+
+  function buildResult(total, id) {
+    const resultContainer = document.getElementById("result-number")
+    resultContainer.appendChild(document.createTextNode(" " + total))
+
+    const resultLi = document.getElementById(id)
+    resultLi.classList.add("result-selected")
+  }
+</script>
 {{end}}

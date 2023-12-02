@@ -6,9 +6,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ .HTMLTitle }}</title>
+  <style media="print">
+    {{ template "print-style" . }}
+  </style>
   <style>
     body {
-      font-family: 'Courier New', Courier, monospace;
+      font-family: 'Trebuchet MS', sans-serif;
       margin: 0;
       display: flex;
       flex-direction: column;
@@ -25,8 +28,8 @@
     .menu {
       position: fixed;
       overflow-y: scroll;
-      height: 90vh;
-      width: 350px;
+      height: calc(90vh - 1px);
+      width: 300px;
       left: 0;
       right: 0;
       top: 10vh;
@@ -37,6 +40,7 @@
 
     .menu-item {
       width: 95%;
+      font-size: 1.1em;
     }
 
     .menu-item button {
@@ -64,14 +68,13 @@
       right: 0;
       top: 0;
 
-      height: 10vh;
-      margin: 0;
+      height: calc(10vh - 1px);
       width: 100%;
       text-align: center;
-      margin: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0 2%;
 
       border-bottom: 1px solid rgb(241, 241, 241);
     }
@@ -93,11 +96,12 @@
       padding: 2%;
       left: 0;
       top: 10vh;
-      margin-left: 350px;
+      margin-left: 300px;
       position: fixed;
       overflow-y: scroll;
       height: 85vh;
     }
+    {{ template "style" . }}
   </style>
 </head>
 
@@ -111,7 +115,11 @@
     <div class="menu">
       {{range .MenuItems}}
       <a class="menu-item" href="{{.HTMLPageName}}">
+        {{ if .Current }}
+        <button><b>{{.PageName}}</b></button>
+        {{else}}
         <button>{{.PageName}}</button>
+        {{end}}
       </a>
       {{end}}
     </div>

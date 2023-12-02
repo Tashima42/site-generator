@@ -1,3 +1,31 @@
+{{define "print-style"}}
+.description {
+display: none;
+}
+
+.print {
+display: none;
+}
+
+#questions {
+display: none;
+}
+
+.calculo {
+display: none;
+}
+
+.result-selected {
+text-decoration: underline;
+}
+
+button {
+display: none;
+}
+{{end}}
+{{define "style"}}
+{{end}}
+
 {{define "content"}}
 <h1 class="title">Auto avaliação da CAES - Características empreendedoras</h1>
 
@@ -720,7 +748,7 @@
 
 <br>
 <div class="calculo">
-  <button onclick="calculateResult()">Calcular resultado</button>
+  <button onclick="result()">Calcular resultado</button>
 </div>
 <br>
 
@@ -778,6 +806,55 @@
   <button onclick="print()">Imprimir resultados</button>
 </div>
 
-<script src="./form.js"></script>
-<script src="./caes.js"></script>
+<script>
+  function calculateResult(answers) {
+    const correction = answers[10] - answers[21] - answers[32] - answers[43] + answers[54] + 18
+    let correctionFactor = 0
+    if (correction >= 20 && correction <= 21) correctionFactor = 3
+    if (correction >= 22 && correction <= 23) correctionFactor = 5
+    if (correction >= 24) correctionFactor = 7
+
+    return {
+      buscaOportunidade: answers[0] + answers[11] + answers[22] - answers[33] + answers[44] + 6 - correctionFactor,
+      persistencia: answers[1] + answers[12] + answers[23] - answers[34] + answers[45] + 6 - correctionFactor,
+      comprometimento: answers[2] + answers[13] + answers[24] + answers[35] - answers[46] + 6 - correctionFactor,
+      exigencia: answers[3] + answers[14] + answers[25] + answers[36] + answers[47] - correctionFactor,
+      riscos: answers[4] + answers[15] + answers[26] - answers[37] + answers[48] + 6 - correctionFactor,
+      metas: answers[5] - answers[16] + answers[27] + answers[38] + answers[49] + 6 - correctionFactor,
+      buscaInformacoes: answers[6] + answers[17] - answers[28] + answers[39] + answers[50] + 6 - correctionFactor,
+      planejamento: answers[7] + answers[18] + answers[29] - answers[40] + answers[51] + 6 - correctionFactor,
+      persuasao: answers[8] - answers[19] + answers[30] + answers[41] + answers[52] + 6 - correctionFactor,
+      independencia: answers[9] - answers[20] + answers[31] + answers[42] + answers[53] + 6 - correctionFactor,
+      fatorCorrecao: correction,
+    }
+  }
+
+  function buildResult(result) {
+    document.getElementById("resultado-busca-oportunidade").appendChild(document.createTextNode(result.buscaOportunidade))
+    document.getElementById("resultado-persistencia").appendChild(document.createTextNode(result.persistencia))
+    document.getElementById("resultado-comprometimento").appendChild(document.createTextNode(result.comprometimento))
+    document.getElementById("resultado-exigencia").appendChild(document.createTextNode(result.exigencia))
+    document.getElementById("resultado-riscos").appendChild(document.createTextNode(result.riscos))
+    document.getElementById("resultado-metas").appendChild(document.createTextNode(result.metas))
+    document.getElementById("resultado-busca-informacoes").appendChild(document.createTextNode(result.buscaInformacoes))
+    document.getElementById("resultado-planejamento").appendChild(document.createTextNode(result.planejamento))
+    document.getElementById("resultado-persuasao").appendChild(document.createTextNode(result.persuasao))
+    document.getElementById("resultado-independencia").appendChild(document.createTextNode(result.independencia))
+    document.getElementById("fator-correcao").appendChild(document.createTextNode(result.fatorCorrecao))
+  }
+
+  function result() {
+    const answers = []
+    const questionsLength = 55
+    for (let i = 0; i < questionsLength; i++) {
+      const { value } = document.getElementById(`question-caes-select-${i}`)
+      if (value == "0") {
+        alert(`Erro: nenhum valor selecionado na questão ${i + 1}`)
+        return
+      }
+      answers.push(parseInt(value))
+    }
+    buildResult(calculateResult(answers))
+  }
+</script>
 {{end}}
