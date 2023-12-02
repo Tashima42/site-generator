@@ -1,28 +1,3 @@
-{{define "print-style"}}
-.description {
-display: none;
-}
-
-.print {
-display: none;
-}
-
-#questions {
-display: none;
-}
-
-.calculo {
-display: none;
-}
-
-.result-selected {
-text-decoration: underline;
-}
-
-button {
-display: none;
-}
-{{end}}
 {{define "meta"}}
 {{end}}
 {{define "style"}}
@@ -803,10 +778,6 @@ display: none;
     <td id="fator-correcao"></td>
   </tr>
 </table>
-
-<div class="print">
-  <button onclick="print()">Imprimir resultados</button>
-</div>
 
 <script>
   function calculateResult(answers) {

@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"embed"
 	"fmt"
 	"html/template"
 	"os"
@@ -10,13 +11,13 @@ import (
 
 const (
 	templatesFolder  = "templates"
+	pagesFolder      = "pages"
 	pageTemplateFile = templatesFolder + "/template.html"
 )
 
 type Options struct {
 	Name            string
 	DestinationPath string
-	SourcePath      string
 }
 
 type PageData struct {
@@ -38,8 +39,11 @@ type MenuItem struct {
 	Current      bool
 }
 
+//go:embed pages
+var pages embed.FS
+
 func Generate(opt Options) error {
-	source, err := os.ReadDir(opt.SourcePath)
+	source, err := pages.ReadDir("pages")
 	if err != nil {
 		return err
 	}
@@ -53,7 +57,7 @@ func Generate(opt Options) error {
 		}
 		meta := MetaData{
 			FileName: e.Name(),
-			Path:     opt.SourcePath + "/" + e.Name(),
+			Path:     pagesFolder + "/" + e.Name(),
 		}
 		metaFile, err := os.ReadFile(meta.Path + "/" + "meta.yaml")
 		if err != nil {

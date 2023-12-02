@@ -2,14 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {{ template "meta" . }}
   <title>{{ .HTMLTitle }}</title>
-  <style media="print">
-    {{ template "print-style" . }}
-  </style>
   <style>
     body {
       font-family: 'Trebuchet MS', sans-serif;
@@ -102,7 +98,8 @@
       overflow-y: scroll;
       height: 85vh;
     }
-    {{ template "style" . }}
+
+      {{ template "style" . }}
   </style>
 </head>
 

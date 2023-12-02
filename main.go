@@ -3,19 +3,24 @@ package main
 import (
 	"log"
 	"os"
+	"time"
 
 	"github.com/tashima42/site-generator/generator"
 	"github.com/tashima42/site-generator/manager"
 	"github.com/urfave/cli/v2"
 )
 
-const version = "0.0.1"
+var (
+	version = "dev"
+	date    = "unknown"
+)
 
 func main() {
 	app := &cli.App{
 		Name:                   "site-generator",
 		UseShortOptionHandling: true,
 		Version:                version,
+		Suggest:                true,
 		Commands: []*cli.Command{
 			{
 				Name:  "generate",
@@ -28,12 +33,6 @@ func main() {
 						Required: true,
 					},
 					&cli.StringFlag{
-						Name:     "source",
-						Usage:    "Path for the source files",
-						Aliases:  []string{"s"},
-						Required: true,
-					},
-					&cli.StringFlag{
 						Name:     "destination",
 						Usage:    "Destination path for the built files",
 						Aliases:  []string{"d"},
@@ -43,7 +42,6 @@ func main() {
 				Action: func(ctx *cli.Context) error {
 					return generator.Generate(generator.Options{
 						Name:            ctx.String("title"),
-						SourcePath:      ctx.String("source"),
 						DestinationPath: ctx.String("destination"),
 					})
 				},
@@ -93,6 +91,12 @@ func main() {
 				},
 			},
 		},
+	}
+	compiled, err := time.Parse("2006-01-02T15:04:05Z", date)
+	if err == nil {
+		app.Compiled = compiled
+	} else {
+		log.Print(err)
 	}
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)

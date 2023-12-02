@@ -25,3 +25,8 @@ build/**
 
 # air
 tmp/
+
+# go embed
+generator/pages/
+
+dist/
