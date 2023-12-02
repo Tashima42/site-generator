@@ -30,7 +30,7 @@ jobs:
           sparse-checkout: .
       - name: install ecm
         run: |
-          ./install v0.0.2
+          ./install v0.0.3
           INSTALL_DIR=$HOME/.local/bin
           echo "${INSTALL_DIR}" >> "${GITHUB_PATH}"
       - name: build
