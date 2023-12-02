@@ -59,7 +59,7 @@ func Generate(opt Options) error {
 			FileName: e.Name(),
 			Path:     pagesFolder + "/" + e.Name(),
 		}
-		metaFile, err := os.ReadFile(meta.Path + "/" + "meta.yaml")
+		metaFile, err := pages.ReadFile(meta.Path + "/" + "meta.yaml")
 		if err != nil {
 			return err
 		}
